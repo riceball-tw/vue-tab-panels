@@ -44,7 +44,9 @@
         <component
           :is="tab.component"
           v-bind="tab.props"
+          :tabId="tab.id"
           :ref="(el) => setTabRef(tab.id, el)"
+          @close="closeTab"
         />
       </div>
     </div>

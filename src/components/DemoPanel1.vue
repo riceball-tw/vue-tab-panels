@@ -1,5 +1,6 @@
 <template>
   <div class="demo-panel">
+    <button @click="handleClose" class="panel-close-btn">×</button>
     <h2>Panel 1 - Counter Demo</h2>
     <p>This panel demonstrates state preservation. The counter value persists when you switch tabs.</p>
     
@@ -28,8 +29,20 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+interface Props {
+  tabId?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  tabId: ''
+})
+
 const count = ref(0)
 const textInput = ref('')
+
+const emit = defineEmits<{
+  close: [tabId: string]
+}>()
 
 const increment = () => {
   count.value++
@@ -42,11 +55,36 @@ const decrement = () => {
 const reset = () => {
   count.value = 0
 }
+
+const handleClose = () => {
+  emit('close', props.tabId)
+}
 </script>
 
 <style scoped>
 .demo-panel {
   padding: 20px;
+  position: relative;
+}
+
+.panel-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 4px 8px;
+  border: none;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.panel-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2);
+  color: #b91c1c;
 }
 
 .counter-section {
